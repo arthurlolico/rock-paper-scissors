@@ -1,46 +1,36 @@
-function getComputerChoice(choice) {
+function getComputerChoice() {
+  
     let computerChoice = "Dummy";
-    let randomNumber = 0;
+    randomNumber = Math.floor(Math.random()*3 +1);
 
-    if(choice === 0){
-        randomNumber = Math.floor(Math.random()*3 +1);
-    }
-    else{
-        randomNumber = choice;
-    }
+    if(randomNumber === 1)
+        computerChoice = "rock";
+    else if(randomNumber === 2)
+        computerChoice = "paper";
+    else
+        computerChoice = "scissors";
 
-
-    if(randomNumber === 1){
-        computerChoice = "Rock";
-    }
-    else if(randomNumber === 2) {
-        computerChoice = "Paper";
-    }
-    else{
-        computerChoice = "Scissors";
-    }
-    
     return computerChoice;
 }
 
-function mainGame(computerChoice,humanChoice) {
+function playRound(humanChoice, computerChoice) {
     if (humanChoice === computerChoice)
         return 2;
     else {
-        if(humanChoice === "Rock"){
-            if(computerChoice === "Paper")
+        if(humanChoice === "rock"){
+            if(computerChoice === "paper")
                 return 0;
             else 
                 return 1;
         }
-        else if(humanChoice === "Paper"){
-            if(computerChoice === "Rock")
+        else if(humanChoice === "paper"){
+            if(computerChoice === "rock")
                 return 1;
             else
                 return 0;
         }
         else {
-            if(computerChoice === "Rock")
+            if(computerChoice === "rock")
                 return 0;
             else {
                 return 1;
@@ -50,22 +40,44 @@ function mainGame(computerChoice,humanChoice) {
 }
 
 function getHumanChoice() {
-    let humanChoice = prompt("Make your choice.\n1.Rock\n2.Paper\n3.Scissors");
+    let humanChoice = prompt("Make your choice.\nRock\nPaper\nScissors");
     if(humanChoice < 1 || humanChoice > 3)
         console.log("Invalid choice.");
     else {
-        let computerChoice = getComputerChoice(0);
-        let humanChoice2 = getComputerChoice(parseInt(humanChoice));
-        let result = mainGame(computerChoice,humanChoice2);
-        if(result == 2)
-            console.log("Draw! Play again.");
-        else if (result == 1)
-            console.log("You chose " + humanChoice2 + " and the PC chose " + computerChoice + ". WIN! o/");
-        else
-            console.log("You chose " + humanChoice2 + " and the PC chose " + computerChoice + ". LOSE... T-T");
+        return humanChoice;
     }
 }
 
-getHumanChoice();
+function playGame(){
+    let humanScore = 0;
+    let computerScore = 0;
+    let i = 0;
 
-//console.log(getComputerChoice());
+    while(i < 5){
+
+        let humanChoice = getHumanChoice().toLowerCase();
+        let computerChoice = getComputerChoice();
+
+        let result = playRound(humanChoice,computerChoice);
+
+        if(result == 2)
+            console.log("Draw!");
+        else if (result == 1){
+            console.log("You win! " + humanChoice + " beats " + computerChoice);
+            humanScore++;
+        }
+        else{
+            console.log("You lose! " + computerChoice + " beats " + humanChoice);
+            computerScore++;
+        }
+        i++;
+    }
+    if(humanScore === computerScore)
+        console.log("This match ends in a draw. :|");
+    else if(humanScore > computerScore)
+        console.log("Congratulations! You won the game! :D");
+    else
+        console.log("You lost! Try again! :(");
+}
+
+playGame();
